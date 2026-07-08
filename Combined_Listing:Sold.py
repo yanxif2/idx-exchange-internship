@@ -1,0 +1,43 @@
+"""
+This python script merges all mthe onthly CRMLSListing and CRMLSSold CSV files into two combined csvs.
+filters to PropertyType == 'Residential'.
+"""
+
+import pandas as pd
+import os
+
+datafolder = "/Users/yanxif/Documents/IDX/summer analyst"
+Listing_list = []
+Sold_list = []
+
+
+
+for filename in sorted(os.listdir(datafolder)):
+    if filename.startswith("CRMLSListing") and filename.endswith("csv"):
+        filepath = os.path.join(datafolder, filename)
+        
+        if filename == "CRMLSListing202605.csv" :
+            df = pd.read_csv(filepath, encoding = "cp1252")
+        else:
+            df = pd.read_csv(filepath, encoding = "utf-8")
+            
+        residential_filtered = df[df["PropertyType"] == "Residential"]
+        Listing_list.append(residential_filtered)
+        
+for filename in sorted(os.listdir(datafolder)):
+    if filename.startswith("CRMLSSold") and filename.endswith("csv"):
+        filepath = os.path.join(datafolder, filename)
+        
+        if filename == "CRMLSSold202605.csv" :
+            df = pd.read_csv(filepath, encoding = "cp1252")
+        else:
+            df = pd.read_csv(filepath, encoding = "utf-8")
+            
+        residential_filtered = df[df["PropertyType"] == "Residential"]
+        Sold_list.append(residential_filtered)
+
+listings = pd.concat(Listing_list, ignore_index=True)
+listings.to_csv(os.path.join(datafolder, "combined_listing.csv"), index = False)
+
+solds = pd.concat(Sold_list, ignore_index=True)
+solds.to_csv(os.path.join(datafolder, "combined_sold.csv"), index = False)
