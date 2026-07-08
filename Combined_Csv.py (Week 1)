@@ -1,5 +1,5 @@
 """
-This python script merges all mthe onthly CRMLSListing and CRMLSSold CSV files into two combined csvs.
+This python script merges all the monthly CRMLSListing and CRMLSSold CSV files into two combined csvs.
 filters to PropertyType == 'Residential'.
 """
 
